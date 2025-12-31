@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeoPay - Boutique de cartes prépayées</title>
+<style>
+body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f0f2f5; }
+header { background:#1a1a1a; color:white; padding:1.2rem; text-align:center; box-shadow:0 2px 5px rgba(0,0,0,0.3);}
+.container { max-width:1200px; margin:20px auto; padding:10px; }
+.category-grid, .cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:20px; }
+.category-card, .card-option { background:white; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); text-align:center; cursor:pointer; padding:10px; transition:0.3s; word-wrap: break-word; }
+.category-card:hover, .card-option:hover { transform:scale(1.05); box-shadow:0 6px 20px rgba(0,0,0,0.2);}
+.category-card img, .card-option img { width:100%; border-radius:12px; }
+.card-name { font-weight:bold; margin-top:5px; font-size:0.95rem; }
+.card-price { color:#007b00; margin-top:3px; font-weight:bold; font-size:0.9rem;}
+#cart-toggle { position:fixed; top:20px; right:20px; background:#007bff; color:white; padding:10px; border-radius:12px; cursor:pointer; z-index:999;}
+#cart { position:fixed; top:60px; right:20px; background:#fff; padding:15px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.2); max-width:300px; max-height:80vh; overflow-y:auto; z-index:999; display:none; }
+#cart h3 { margin-top:0; text-align:center;}
+#cart-items { margin-bottom:10px; }
+.cart-item { display:flex; justify-content:space-between; align-items:center; margin:6px 0; font-size:0.9rem; word-wrap: break-word; }
+button { background:#007bff; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; transition:0.2s; font-size:0.9rem; width:100%; margin-top:5px;}
+button:hover { background:#0056b3; }
+input[type="text"] { width:100%; padding:6px; margin:6px 0; border-radius:6px; border:1px solid #ccc; font-size:0.9rem; }
+h2 { margin-top:30px; color:#333; }
+.description { background:#e8f4ff; padding:10px; border-radius:6px; margin:10px 0; font-size:0.9rem; }
+.alert { color:red; font-weight:bold; margin:10px 0; text-align:center; }
+.copy-btn { margin-top:5px; background:#28a745; width:100%; }
+.copy-btn:hover { background:#1e7e34; }
+/* Responsive */
+@media(max-width:600px){
+  .category-grid, .cards-grid { grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); }
+  #cart { max-width:90%; right:5%; top:50px; padding:10px; max-height:70vh; }
+  button, .copy-btn { font-size:0.85rem; padding:5px; }
+  input[type="text"] { font-size:0.85rem; padding:5px; }
+  h2 { font-size:1rem; }
+  .description { font-size:0.85rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>LeoPay - Boutique de cartes prépayées</h1>
+</header>
+
+<div class="container">
+  <h2>Catégories</h2>
+  <div class="category-grid" id="categories"></div>
+
+  <h2 id="category-title"></h2>
+  <div class="cards-grid" id="cards"></div>
+</div>
+
+<div id="cart-toggle">Voir le panier</div>
+
+<div id="cart">
+  <h3>Panier</h3>
+  <div class="description">
+    Pour finaliser votre commande :<br>
+    1. Entrez les 8 derniers chiffres de votre numéro togolais (le +228 est déjà ajouté).<br>
+    2. Entrez la région du compte.<br>
+    3. Cliquez sur “Générer USSD” et tapez le code sur votre téléphone.<br>
+    4. ATTENTION : vous devez joindre **manuellement** la capture d’écran du message reçu après le paiement avant d’envoyer le message WhatsApp.<br>
+    5. Validez la commande pour que nous recevions vos informations et procédions à la livraison.
+  </div>
+  <div class="alert">⚠ Veuillez joindre la capture d'écran du paiement avant d'envoyer le message WhatsApp !</div>
+  <div id="cart-items"></div>
+  <p>Total : <span id="cart-total">0</span> FCFA</p>
+  <p>+228<input type="text" id="phone" maxlength="8" placeholder="Entrez vos 8 derniers chiffres"></p>
+  <input type="text" id="region" placeholder="Entrez la région du compte">
+  <button id="generate-ussd">Générer USSD</button>
+  <input type="text" id="ussd-code" readonly placeholder="Votre code USSD">
+  <button class="copy-btn" onclick="copyUSSD()">Copier le code</button>
+  <button id="checkout">Valider la commande</button>
+</div>
+
+<script>
+// Numéro commerçant
+const merchantNumber = "91515183";
+
+// Images des grands ensembles
+const ensembleImages = {
+  "PlayStation Store": "images/playstation/playstation-store-LL.png",
+  "PlayStation Plus": "images/playstation/playstation-store-LL.png",
+  "Google Play": "images/google/Google-Play-LL-New.png",
+  "Steam": "images/steam/Steam-LL.png",
+  "Xbox": "images/xbox/xbox-shopping-bag-1.png",
+  "Nintendo eShop": "images/nintendo/Nintendo-eShop-LL.png",
+  "Nintendo Switch Online": "images/nintendo/Nintendo-Switch-Online.png",
+  "Roblox": "images/roblox/Roblox_ProductCard_GiftCard-1.png",
+  "Epic Games / Fortnite": "images/epic/Card-2-FR-1.png"
+};
+
+// Catalogue complet
+const catalog = {
+  "PlayStation Store":[{name:"Carte 10 €", price:7500},{name:"Carte 20 €", price:14500},{name:"Carte 50 €", price:36500},{name:"Carte 100 €", price:73500}],
+  "PlayStation Plus":[{name:"Essential – 1 mois", price:6750},{name:"Essential – 3 mois", price:17750},{name:"Essential – 12 mois", price:50500},{name:"Extra – 1 mois", price:10000},{name:"Extra – 3 mois", price:28500},{name:"Extra – 12 mois", price:87000},{name:"Premium – 1 mois", price:12500},{name:"Premium – 3 mois", price:35500},{name:"Premium – 12 mois", price:105000}],
+  "Google Play":[{name:"Carte 5 €", price:3750},{name:"Carte 10 €", price:7500},{name:"Carte 25 €", price:18000},{name:"Carte 50 €", price:36500},{name:"Carte 100 €", price:73500}],
+  "Steam":[{name:"Carte 10 €", price:7500},{name:"Carte 20 €", price:14500},{name:"Carte 50 €", price:36500},{name:"Carte 100 €", price:73500}],
+  "Xbox":[{name:"Game Pass Ultimate – 1 mois", price:13000},{name:"Game Pass Ultimate – 3 mois", price:38500},{name:"Game Pass Core – 3 mois", price:15000},{name:"Game Pass Core – 6 mois", price:22000},{name:"Game Pass Core – 12 mois", price:40000},{name:"Carte 5 €", price:3750},{name:"Carte 10 €", price:7500},{name:"Carte 15 €", price:11000},{name:"Carte 20 €", price:14500},{name:"Carte 25 €", price:18000},{name:"Carte 50 €", price:36500},{name:"Carte 100 €", price:73500}],
+  "Nintendo eShop":[{name:"Carte 15 €", price:11250},{name:"Carte 25 €", price:18000},{name:"Carte 50 €", price:36500},{name:"Carte 100 €", price:73500}],
+  "Nintendo Switch Online":[{name:"1 mois", price:6000},{name:"3 mois", price:12000},{name:"12 mois", price:30000}],
+  "Roblox":[{name:"Carte 10 €", price:7500},{name:"Carte 20 €", price:14500},{name:"Carte 50 €", price:36500},{name:"Carte 100 €", price:73500}],
+  "Epic Games / Fortnite":[{name:"1000 V-BUCKS", price:6750},{name:"2800 V-BUCKS", price:17250},{name:"5000 V-BUCKS", price:27750},{name:"13500 V-BUCKS", price:67500}]
+};
+
+// Affichage catégories avec images
+const categoriesDiv = document.getElementById('categories');
+Object.keys(catalog).forEach(cat=>{
+  const div=document.createElement('div');
+  div.className="category-card";
+  if(ensembleImages[cat]) div.innerHTML=`<img src="${ensembleImages[cat]}" alt="${cat}"><div class="card-name">${cat}</div>`;
+  else div.innerHTML=`<div class="card-name">${cat}</div>`;
+  div.onclick=()=>showCards(cat);
+  categoriesDiv.appendChild(div);
+});
+
+// Affichage cartes
+const cardsDiv=document.getElementById('cards');
+const categoryTitle=document.getElementById('category-title');
+function showCards(category){
+  categoryTitle.innerText=category;
+  cardsDiv.innerHTML="";
+  catalog[category].forEach(card=>{
+    const div=document.createElement('div');
+    div.className="card-option";
+    div.innerHTML=`<div class="card-name">${card.name}</div><div class="card-price">${card.price} FCFA</div><button onclick='addToCart(${JSON.stringify({category,name:card.name,price:card.price}).replace(/"/g,'&quot;')})'>Ajouter au panier</button>`;
+    cardsDiv.appendChild(div);
+  });
+}
+
+// Panier
+let cart=[];
+function addToCart(card){ cart.push(card); updateCart(); }
+function removeFromCart(i){ cart.splice(i,1); updateCart(); }
+function updateCart(){
+  const cartItems=document.getElementById('cart-items');
+  cartItems.innerHTML="";
+  let total=0;
+  cart.forEach((item,i)=>{
+    total+=item.price;
+    const div=document.createElement('div');
+    div.className="cart-item";
+    div.innerHTML=`<span>${item.category} - ${item.name}</span> <span>${item.price} FCFA</span> <button onclick="removeFromCart(${i})">Supprimer</button>`;
+    cartItems.appendChild(div);
+  });
+  document.getElementById('cart-total').innerText=total;
+}
+
+// Toggle panier
+const cartToggle=document.getElementById('cart-toggle');
+const cartDiv=document.getElementById('cart');
+let cartVisible=false;
+cartToggle.onclick=()=>{
+  cartVisible=!cartVisible;
+  cartDiv.style.display=cartVisible?'block':'none';
+  cartToggle.innerText=cartVisible?'Fermer le panier':'Voir le panier';
+};
+
+// USSD
+document.getElementById('generate-ussd').onclick=()=>{
+  const phoneInput=document.getElementById('phone').value;
+  if(!/^\d{8}$/.test(phoneInput)){ alert("Veuillez entrer les 8 derniers chiffres de votre numéro togolais."); return; }
+  if(cart.length===0){ alert("Votre panier est vide."); return; }
+  let total=cart.reduce((sum,item)=>sum+item.price,0);
+  const ussd=`*145*1*${total}*2*${merchantNumber}#`;
+  document.getElementById('ussd-code').value=ussd;
+};
+
+// Copier USSD
+function copyUSSD(){
+  const ussdInput=document.getElementById('ussd-code');
+  ussdInput.select();
+  ussdInput.setSelectionRange(0,99999);
+  document.execCommand("copy");
+  alert("Code USSD copié !");
+}
+
+// Checkout WhatsApp
+document.getElementById('checkout').onclick=()=>{
+  const phoneInput=document.getElementById('phone').value;
+  const regionInput=document.getElementById('region').value;
+  if(!/^\d{8}$/.test(phoneInput)){ alert("Veuillez entrer les 8 derniers chiffres de votre numéro togolais."); return; }
+  if(cart.length===0){ alert("Votre panier est vide."); return; }
+  if(!regionInput){ alert("Veuillez entrer la région du compte."); return; }
+  const fullPhone="+228"+phoneInput;
+  let total=cart.reduce((sum,item)=>sum+item.price,0);
+  const message=`Nouvelle commande LeoPay:\nNuméro: ${fullPhone}\nRégion: ${regionInput}\nPanier:\n${cart.map(c=>c.category+" - "+c.name+" - "+c.price+" FCFA").join("\n")}\nTotal: ${total} FCFA\n\n⚠ Veuillez joindre manuellement la capture d'écran du paiement avant d'envoyer.`;
+  const waLink=`https://wa.me/228${merchantNumber}?text=${encodeURIComponent(message)}`;
+  window.open(waLink,'_blank');
+};
+</script>
+</body>
+</html>
