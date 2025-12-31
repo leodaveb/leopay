@@ -6,234 +6,64 @@
 <title>LeoPay - Boutique de cartes prépayées</title>
 <style>
 /* Reset & global */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f4f6f8;
-  color: #333;
-  line-height: 1.5;
-}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f4f6f8; color:#333; line-height:1.5; }
 
 /* Header */
-header {
-  background: linear-gradient(90deg,#1a1a1a,#333);
-  color: #fff;
-  padding: 1.5rem;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-header h1 {
-  font-size: 1.8rem;
-  letter-spacing: 1px;
-}
+header { background:linear-gradient(90deg,#1a1a1a,#333); color:#fff; padding:1.5rem; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.2);}
+header h1 { font-size:1.8rem; letter-spacing:1px; }
 
 /* Container */
-.container {
-  max-width: 1200px;
-  margin: 30px auto;
-  padding: 0 15px;
-}
+.container { max-width:1200px; margin:30px auto; padding:0 15px; }
 
 /* Category & Cards grid */
-.category-grid, .cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(160px,1fr));
-  gap: 20px;
-  margin-top: 20px;
-}
+.category-grid, .cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:20px; margin-top:20px; }
 
 /* Category card */
-.category-card {
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  text-align: center;
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-  overflow: hidden;
-  position: relative;
-}
-.category-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-}
-.category-card img {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-bottom: 1px solid #eee;
-}
-.category-card .card-name {
-  padding: 10px;
-  font-weight: bold;
-  font-size: 1rem;
-}
+.category-card { background:#fff; border-radius:15px; box-shadow:0 4px 20px rgba(0,0,0,0.1); text-align:center; cursor:pointer; transition: transform 0.3s, box-shadow 0.3s; overflow:hidden; position:relative; }
+.category-card:hover { transform: translateY(-5px); box-shadow:0 8px 25px rgba(0,0,0,0.2);}
+.category-card img { width:100%; height:120px; object-fit:cover; border-bottom:1px solid #eee;}
+.category-card .card-name { padding:10px; font-weight:bold; font-size:1rem; }
 
 /* Arrow */
-.arrow {
-  display: inline-block;
-  margin-left: 5px;
-  transition: transform 0.3s;
-  font-size: 1.2rem;
-}
-.arrow.down {
-  transform: rotate(90deg);
-}
+.arrow { display:inline-block; margin-left:5px; transition:transform 0.3s; font-size:1.2rem; }
+.arrow.down { transform:rotate(90deg); }
 
 /* Card option */
-.card-option {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-  text-align: center;
-  padding: 12px;
-  transition: transform 0.3s, box-shadow 0.3s;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-.card-option:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-.card-option .card-name {
-  font-weight: 600;
-  font-size: 0.95rem;
-  margin-bottom: 6px;
-}
-.card-option .card-price {
-  color: #007b00;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-.card-option button {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-.card-option button:hover {
-  background: #0056b3;
-}
+.card-option { background:#fff; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.08); text-align:center; padding:12px; transition: transform 0.3s, box-shadow 0.3s; display:flex; flex-direction:column; justify-content:space-between;}
+.card-option:hover { transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.15);}
+.card-option img { width:100%; border-radius:8px; margin-bottom:6px; }
+.card-option .card-name { font-weight:600; font-size:0.95rem; margin-bottom:6px; }
+.card-option .card-price { color:#007b00; font-weight:bold; margin-bottom:8px; }
+.card-option button { background:#007bff; color:white; border:none; padding:8px; border-radius:8px; cursor:pointer; transition: background 0.3s; }
+.card-option button:hover { background:#0056b3; }
 
 /* Cart toggle button */
-#cart-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: #007bff;
-  color: white;
-  padding: 12px 15px;
-  border-radius: 50px;
-  cursor: pointer;
-  font-weight: bold;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  z-index: 999;
-  transition: background 0.3s, transform 0.3s;
-}
-#cart-toggle:hover {
-  background: #0056b3;
-  transform: translateY(-2px);
-}
+#cart-toggle { position:fixed; top:20px; right:20px; background:#007bff; color:white; padding:12px 15px; border-radius:50px; cursor:pointer; font-weight:bold; box-shadow:0 4px 15px rgba(0,0,0,0.2); z-index:999; transition: background 0.3s, transform 0.3s;}
+#cart-toggle:hover { background:#0056b3; transform:translateY(-2px); }
 
 /* Cart */
-#cart {
-  position: fixed;
-  top: 70px;
-  right: 20px;
-  background: #fff;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 4px 25px rgba(0,0,0,0.2);
-  max-width: 320px;
-  z-index: 999;
-  display: none;
-  max-height: 85vh;
-  overflow-y: auto;
-}
-#cart h3 {
-  text-align: center;
-  font-size: 1.2rem;
-  margin-bottom: 15px;
-}
-.cart-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 8px 0;
-  font-size: 0.9rem;
-}
-.cart-item button {
-  background: #dc3545;
-  padding: 4px 8px;
-  font-size: 0.8rem;
-  border-radius: 6px;
-}
-.cart-item button:hover {
-  background: #a71d2a;
-}
+#cart { position:fixed; top:70px; right:20px; background:#fff; padding:20px; border-radius:15px; box-shadow:0 4px 25px rgba(0,0,0,0.2); max-width:320px; z-index:999; display:none; max-height:85vh; overflow-y:auto;}
+#cart h3 { text-align:center; font-size:1.2rem; margin-bottom:15px; }
+.cart-item { display:flex; justify-content:space-between; align-items:center; margin:8px 0; font-size:0.9rem; }
+.cart-item button { background:#dc3545; padding:4px 8px; font-size:0.8rem; border-radius:6px;}
+.cart-item button:hover { background:#a71d2a; }
 
 /* Inputs */
-input[type="text"] {
-  width: 100%;
-  padding: 8px;
-  margin: 6px 0;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 0.9rem;
-}
+input[type="text"] { width:100%; padding:8px; margin:6px 0; border-radius:8px; border:1px solid #ccc; font-size:0.9rem; }
 
 /* Buttons */
-button {
-  font-weight: bold;
-}
-.copy-btn {
-  margin-top: 5px;
-  background: #28a745;
-}
-.copy-btn:hover { background: #1e7e34; }
+button { font-weight:bold; }
+.copy-btn { margin-top:5px; background:#28a745; }
+.copy-btn:hover { background:#1e7e34; }
 
 /* Description & alert */
-.description {
-  background: #e8f4ff;
-  padding: 12px;
-  border-radius: 10px;
-  margin-bottom: 12px;
-  font-size: 0.9rem;
-}
-.alert {
-  color: red;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 12px;
-  font-size: 0.95rem;
-}
+.description { background:#e8f4ff; padding:12px; border-radius:10px; margin-bottom:12px; font-size:0.9rem; }
+.alert { color:red; font-weight:bold; text-align:center; margin-bottom:12px; font-size:0.95rem; }
 
 /* Responsive */
-@media(max-width: 768px){
-  .category-grid, .cards-grid {
-    grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
-  }
-  #cart {
-    max-width: 90%;
-    right: 5%;
-    top: 80px;
-  }
-}
-@media(max-width: 480px){
-  .category-grid, .cards-grid {
-    grid-template-columns: repeat(auto-fill,minmax(120px,1fr));
-  }
-  header h1 { font-size: 1.5rem; }
-  #cart-toggle { padding: 10px 12px; font-size: 0.9rem; }
-}
+@media(max-width:768px){ .category-grid, .cards-grid { grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); } #cart { max-width:90%; right:5%; top:80px; } }
+@media(max-width:480px){ .category-grid, .cards-grid { grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); } header h1 { font-size:1.5rem; } #cart-toggle { padding:10px 12px; font-size:0.9rem; } }
 </style>
 </head>
 <body>
@@ -296,119 +126,187 @@ const catalog = {
   "PlayStation Plus":[{name:"Carte Cadeau Playstation Plus 25 €",price:18000},{name:"Carte Cadeau Playstation Plus 40 €",price:28000},{name:"Carte Cadeau Playstation Plus 60 €",price:42000},{name:"Carte Cadeau Playstation Plus 120 €",price:88000}],
   "Google Play":[{name:"Carte 5 €",price:3750},{name:"Carte 10 €",price:7500},{name:"Carte 25 €",price:18000},{name:"Carte 50 €",price:36500},{name:"Carte 100 €",price:73500}],
   "Steam":[{name:"Carte 10 €",price:7500},{name:"Carte 20 €",price:14500},{name:"Carte 50 €",price:36500},{name:"Carte 100 €",price:73500}],
-  "Xbox":[
-  {name:"Xbox Gift Card 5 €", price:3750},{name:"Xbox Gift Card 10 €", price:7500},{name:"Xbox Gift Card 15 €", price:11000},{name:"Xbox Gift Card 20 €", price:14500},{name:"Xbox Gift Card 25 €", price:18000},{name:"Xbox Gift Card 30 €", price:21500},{name:"Xbox Gift Card 45 €", price:31500},{name:"Xbox Gift Card 50 €", price:36500},{name:"Xbox Gift Card 75 €", price:54000},{name:"Xbox Gift Card 100 €", price:73500}],
+  "Xbox":[{name:"Xbox Gift Card 5 €", price:3750},{name:"Xbox Gift Card 10 €", price:7500},{name:"Xbox Gift Card 15 €", price:11000},{name:"Xbox Gift Card 20 €", price:14500},{name:"Xbox Gift Card 25 €", price:18000},{name:"Xbox Gift Card 30 €", price:21500},{name:"Xbox Gift Card 45 €", price:31500},{name:"Xbox Gift Card 50 €", price:36500},{name:"Xbox Gift Card 75 €", price:54000},{name:"Xbox Gift Card 100 €", price:73500}],
   "Nintendo eShop":[{name:"Carte 15 €",price:11250},{name:"Carte 25 €",price:18000},{name:"Carte 50 €",price:36500},{name:"Carte 100 €",price:73500}],
   "Nintendo Switch Online":[{name:"3 mois",price:6000},{name:"12 mois",price:14500}],
   "Roblox":[{name:"Carte 10 €",price:7500},{name:"Carte 20 €",price:14500},{name:"Carte 50 €",price:36500},{name:"Carte 100 €",price:73500}],
-  "Epic Games / Fortnite":[{name:"Carte 5 €",price:3750},{name:"Carte 10 €",price:7500},{name:"Carte 20 €",price:14500},{name:"Carte 25 €",price:18000},{name:"Carte 50 €",price:36500},{name:"Carte 100 €",price:73500}]
+  "Epic Games / Fortnite":[{name:"Carte fortnite 10 €",price:7500},{name:"Carte fortnite 25 €",price:18000},{name:"Carte fortnite 50 €",price:36500},{name:"Carte fortnite 100 €",price:73500}]
 };
 
-// Affichage catégories avec images
+// Images des articles
+const cardImages = {
+  "PlayStation Store": {
+    "Carte 10 €": "images/playstation/61fvwNwFLkL._AC_UL480_FMwebp_QL65_.webp",
+    "Carte 20 €": "images/playstation/615mWTW4msL._AC_UL480_FMwebp_QL65_.webp",
+    "Carte 25 €": "images/playstation/7bb3e00e-ff12-4d45-a32b-c901eb855b8d.png",
+    "Carte 50 €": "images/playstation/612U771jx7L._AC_UL480_FMwebp_QL65_.webp",
+    "Carte 100 €": "images/playstation/49632aea-f345-4394-a5d7-e5921c9bf500.png"
+  },
+  "PlayStation Plus": {
+    "Carte Cadeau Playstation Plus 25 €": "images/playstation/Gift-cards-Dual-Branded.jpg",
+    "Carte Cadeau Playstation Plus 40 €": "images/playstation/Gift-cards-Dual-Branded.jpg",
+    "Carte Cadeau Playstation Plus 60 €": "images/playstation/Gift-cards-Dual-Branded.jpg",
+    "Carte Cadeau Playstation Plus 120 €": "images/playstation/Gift-cards-Dual-Branded.jpg"
+  },
+  "Google Play": {
+    "Carte 5 €": "images/google/Google-Play-LL-New.png",
+    "Carte 10 €": "images/google/Google-Play-LL-New.png",
+    "Carte 25 €": "images/google/Google-Play-LL-New.png",
+    "Carte 50 €": "images/google/Google-Play-LL-New.png",
+    "Carte 100 €": "images/google/Google-Play-LL-New.png"
+  },
+  "Steam": {
+    "Carte 10 €": "images/steam/Steam-LL.png",
+    "Carte 20 €": "images/steam/Steam-LL.png",
+    "Carte 50 €": "images/steam/Steam-LL.png",
+    "Carte 100 €": "images/steam/Steam-LL.png"
+  },
+  "Xbox": {
+    "Xbox Gift Card 5 €": "images/xbox/xbox-shopping-bag-1.png",
+    "Xbox Gift Card 10 €": "images/xbox/xbox-shopping-bag-1.png",
+    "Xbox Gift Card 15 €": "images/xbox/xbox-shopping-bag-1.png",
+    "Xbox Gift Card 20 €": "images/xbox/xbox-shopping-bag-1.png",
+    "Xbox Gift Card 25 €": "images/xbox/xbox-shopping-bag-1.png",
+    "Xbox Gift Card 30 €": "images/xbox/xbox-shopping-bag-1.png",
+    "Xbox Gift Card 45 €": "images/xbox/xbox-shopping-bag-1.png",
+    "Xbox Gift Card 50 €": "images/xbox/xbox-shopping-bag-1.png",
+    "Xbox Gift Card 75 €": "images/xbox/xbox-shopping-bag-1.png",
+    "Xbox Gift Card 100 €": "images/xbox/xbox-shopping-bag-1.png"
+  },
+  "Nintendo eShop": {
+    "Carte 15 €": "images/nintendo/Nintendo-15-EUR-LL.png",
+    "Carte 25 €": "images/nintendo/Nintendo-25-EUR-LL.png",
+    "Carte 50 €": "images/nintendo/Nintendo-50-EUR-LL.png",
+    "Carte 100 €": "images/nintendo/Nintendo-100-EUR-LL.png"
+  },
+  "Nintendo Switch Online": {
+    "3 mois": "images/nintendo/Nintendo-Switch-Online.png",
+    "12 mois": "images/nintendo/Nintendo-Switch-Online.png"
+  },
+  "Roblox": {
+    "Carte 10 €": "images/roblox/Roblox-LL.png",
+    "Carte 20 €": "images/roblox/Roblox-LL.png",
+    "Carte 50 €": "images/roblox/Roblox-LL.png",
+    "Carte 100 €": "images/roblox/Roblox-LL.png"
+  },
+  "Epic Games / Fortnite": {
+    "Carte fortnite 10 €": "images/epic/1950222352-180x180.webp",
+    "Carte fortnite 25 €": "images/epic/2170783903-180x180.webp",
+    "Carte fortnite 50 €": "images/epic/333649423-180x180.webp",
+    "Carte fortnite 100 €": "images/epic/304312794-180x180.webp",
+    "1000 V-Bucks": "images/epic/vbucks1000.png",
+    "2800 V-Bucks": "images/epic/vbucks2800.png",
+    "5000 V-Bucks": "images/epic/vbucks5000.png",
+    "13500 V-Bucks": "images/epic/vbucks13500.png"
+  }
+};
+
+// Affichage catégories
 const categoriesDiv = document.getElementById('categories');
 Object.keys(catalog).forEach(cat=>{
-  const div = document.createElement('div');
-  div.className = "category-card";
-  if(ensembleImages[cat]) div.innerHTML = `<img src="${ensembleImages[cat]}" alt="${cat}"><div class="card-name">${cat}</div>`;
-  else div.innerHTML = `<div class="card-name">${cat}</div>`;
-  div.onclick = ()=> showCards(cat);
+  const div=document.createElement('div');
+  div.className="category-card";
+  div.innerHTML = ensembleImages[cat]? `<img src="${ensembleImages[cat]}" alt="${cat}"><div class="card-name">${cat}</div>` : `<div class="card-name">${cat}</div>`;
+  div.onclick=()=>showCards(cat);
   categoriesDiv.appendChild(div);
 });
 
-// Affichage cartes et flèche déroulante
-let activeCategoryDiv = null;
-const cardsDiv = document.getElementById('cards');
-const categoryTitle = document.getElementById('category-title');
+// Affichage cartes avec images
+let activeCategoryDiv=null;
+const cardsDiv=document.getElementById('cards');
+const categoryTitle=document.getElementById('category-title');
 
 function showCards(category){
-  categoryTitle.innerText = category;
-  cardsDiv.innerHTML = "";
-
+  categoryTitle.innerText=category;
+  cardsDiv.innerHTML="";
   if(activeCategoryDiv){
-    const prevArrow = activeCategoryDiv.querySelector(".arrow");
+    const prevArrow=activeCategoryDiv.querySelector(".arrow");
     if(prevArrow) prevArrow.remove();
   }
 
-  const categoryDivs = document.querySelectorAll(".category-card");
+  const categoryDivs=document.querySelectorAll(".category-card");
   categoryDivs.forEach(div=>{
     if(div.innerText.includes(category)){
-      const arrow = document.createElement("span");
-      arrow.className = "arrow";
-      arrow.innerHTML = "&#9654;"; // flèche droite
+      const arrow=document.createElement("span");
+      arrow.className="arrow";
+      arrow.innerHTML="&#9654;";
       div.appendChild(arrow);
-      activeCategoryDiv = div;
+      activeCategoryDiv=div;
       arrow.classList.add("down");
     }
   });
 
   catalog[category].forEach(card=>{
-    const div = document.createElement('div');
-    div.className = "card-option";
-    div.innerHTML = `<div class="card-name">${card.name}</div><div class="card-price">${card.price} FCFA</div><button onclick='addToCart(${JSON.stringify({category,name:card.name,price:card.price}).replace(/"/g,'&quot;')})'>Ajouter au panier</button>`;
+    const div=document.createElement('div');
+    div.className="card-option";
+    const imgSrc=cardImages[category]?.[card.name] || "images/default.png";
+    div.innerHTML = `
+      <img src="${imgSrc}" alt="${card.name}">
+      <div class="card-name">${card.name}</div>
+      <div class="card-price">${card.price} FCFA</div>
+      <button onclick='addToCart(${JSON.stringify({category,name:card.name,price:card.price}).replace(/"/g,'&quot;')})'>Ajouter au panier</button>
+    `;
     cardsDiv.appendChild(div);
   });
-
   cardsDiv.scrollIntoView({behavior:"smooth"});
 }
 
 // Panier
-let cart = [];
-function addToCart(card){ cart.push(card); updateCart(); }
-function removeFromCart(index){ cart.splice(index,1); updateCart(); }
+let cart=[];
+function addToCart(card){cart.push(card); updateCart();}
+function removeFromCart(i){cart.splice(i,1); updateCart();}
 function updateCart(){
-  const cartItems = document.getElementById('cart-items');
-  cartItems.innerHTML = "";
-  let total = 0;
+  const cartItems=document.getElementById('cart-items');
+  cartItems.innerHTML="";
+  let total=0;
   cart.forEach((item,i)=>{
-    total += item.price;
-    const div = document.createElement('div');
-    div.className = "cart-item";
-    div.innerHTML = `<span>${item.category} - ${item.name}</span> <span>${item.price} FCFA</span> <button onclick="removeFromCart(${i})">Supprimer</button>`;
+    total+=item.price;
+    const div=document.createElement('div');
+    div.className="cart-item";
+    div.innerHTML=`<span>${item.category} - ${item.name}</span> <span>${item.price} FCFA</span> <button onclick="removeFromCart(${i})">Supprimer</button>`;
     cartItems.appendChild(div);
   });
-  document.getElementById('cart-total').innerText = total;
+  document.getElementById('cart-total').innerText=total;
 }
 
-// Onglet panier
-const cartToggle = document.getElementById('cart-toggle');
-const cartDiv = document.getElementById('cart');
-let cartVisible = false;
-cartToggle.onclick = ()=>{
-  cartVisible = !cartVisible;
-  cartDiv.style.display = cartVisible?'block':'none';
-  cartToggle.innerText = cartVisible?'Fermer le panier':'Voir le panier';
+// Toggle panier
+const cartToggle=document.getElementById('cart-toggle');
+const cartDiv=document.getElementById('cart');
+let cartVisible=false;
+cartToggle.onclick=()=>{
+  cartVisible=!cartVisible;
+  cartDiv.style.display=cartVisible?'block':'none';
+  cartToggle.innerText=cartVisible?'Fermer le panier':'Voir le panier';
 };
 
 // USSD
-document.getElementById('generate-ussd').onclick = ()=>{
-  const phoneInput = document.getElementById('phone').value;
-  if(!/^\d{8}$/.test(phoneInput)){ alert("Veuillez entrer les 8 derniers chiffres de votre numéro togolais."); return; }
-  if(cart.length===0){ alert("Votre panier est vide."); return; }
-  let total = cart.reduce((sum,item)=>sum+item.price,0);
-  const ussd = `*145*1*${total}*2*${merchantNumber}#`;
-  document.getElementById('ussd-code').value = ussd;
+document.getElementById('generate-ussd').onclick=()=>{
+  const phoneInput=document.getElementById('phone').value;
+  if(!/^\d{8}$/.test(phoneInput)){ alert("Veuillez entrer les 8 derniers chiffres."); return; }
+  if(cart.length===0){ alert("Panier vide."); return; }
+  let total=cart.reduce((sum,item)=>sum+item.price,0);
+  document.getElementById('ussd-code').value=`*145*1*${total}*${merchantNumber}#`;
 };
 
 // Copier USSD
 function copyUSSD(){
-  const ussdInput = document.getElementById('ussd-code');
+  const ussdInput=document.getElementById('ussd-code');
   ussdInput.select();
-  ussdInput.setSelectionRange(0,99999);
   document.execCommand("copy");
   alert("Code USSD copié !");
 }
 
-// Checkout via WhatsApp
-document.getElementById('checkout').onclick = ()=>{
-  const phoneInput = document.getElementById('phone').value;
-  const regionInput = document.getElementById('region').value;
-  if(!/^\d{8}$/.test(phoneInput)){ alert("Veuillez entrer les 8 derniers chiffres de votre numéro togolais."); return; }
-  if(cart.length===0){ alert("Votre panier est vide."); return; }
-  if(!regionInput){ alert("Veuillez entrer la région du compte."); return; }
-  const fullPhone = "+228"+phoneInput;
-  let total = cart.reduce((sum,item)=>sum+item.price,0);
-  const message = `Nouvelle commande LeoPay:\nNuméro: ${fullPhone}\nRégion: ${regionInput}\nPanier:\n${cart.map(c=>c.category+" - "+c.name+" - "+c.price+" FCFA").join("\n")}\nTotal: ${total} FCFA\n\n⚠ Veuillez joindre manuellement la capture d'écran du paiement avant d'envoyer.`;
-  const waLink = `https://wa.me/228${merchantNumber}?text=${encodeURIComponent(message)}`;
+// Checkout WhatsApp
+document.getElementById('checkout').onclick=()=>{
+  const phoneInput=document.getElementById('phone').value;
+  const regionInput=document.getElementById('region').value;
+  if(!/^\d{8}$/.test(phoneInput)){ alert("Entrez les 8 derniers chiffres."); return; }
+  if(cart.length===0){ alert("Panier vide."); return; }
+  if(!regionInput){ alert("Entrez la région."); return; }
+  const fullPhone="+228"+phoneInput;
+  let total=cart.reduce((sum,item)=>sum+item.price,0);
+  const message=`Nouvelle commande LeoPay:\nNuméro: ${fullPhone}\nRégion: ${regionInput}\nPanier:\n${cart.map(c=>c.category+" - "+c.name+" - "+c.price+" FCFA").join("\n")}\nTotal: ${total} FCFA\n\n⚠ Veuillez joindre manuellement la capture d'écran du paiement avant d'envoyer.`;
+  const waLink=`https://wa.me/228${merchantNumber}?text=${encodeURIComponent(message)}`;
   window.open(waLink,'_blank');
 };
 </script>
