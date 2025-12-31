@@ -1,3 +1,17 @@
+<?php
+// Étape 4, 5, 6 : connexion à la base de données
+$host = "localhost";
+$dbname = "leobase";
+$user = "root";
+$pass = "82848245";
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e){
+    die("Erreur de connexion : " . $e->getMessage());
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -231,7 +245,7 @@ function showCards(category){
       arrow.className="arrow";
       arrow.innerHTML="&#9654;";
       div.appendChild(arrow);
-      activeCategoryDiv=div;
+      activeCategoryDivactiveCategoryDiv = div;
       arrow.classList.add("down");
     }
   });
@@ -305,9 +319,28 @@ document.getElementById('checkout').onclick=()=>{
   if(!regionInput){ alert("Entrez la région."); return; }
   const fullPhone="+228"+phoneInput;
   let total=cart.reduce((sum,item)=>sum+item.price,0);
+  
+  // Étape 6 : enregistrer la commande dans la base de données
+  <?php
+  if(isset($_POST['cartData'])){
+      $cartData = $_POST['cartData']; // JSON envoyé via JS fetch
+      $phone = $_POST['phone'];
+      $region = $_POST['region'];
+      $stmt = $pdo->prepare("INSERT INTO commandes (phone, region, cart, total, date_cmd) VALUES (?, ?, ?, ?, NOW())");
+      $stmt->execute([$phone, $region, $cartData, $total]);
+  }
+  ?>
+  
   const message=`Nouvelle commande LeoPay:\nNuméro: ${fullPhone}\nRégion: ${regionInput}\nPanier:\n${cart.map(c=>c.category+" - "+c.name+" - "+c.price+" FCFA").join("\n")}\nTotal: ${total} FCFA\n\n⚠ Veuillez joindre manuellement la capture d'écran du paiement avant d'envoyer.`;
   const waLink=`https://wa.me/228${merchantNumber}?text=${encodeURIComponent(message)}`;
   window.open(waLink,'_blank');
+
+  // Envoyer la commande au serveur pour sauvegarde
+  fetch('', {
+    method:'POST',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:`cartData=${encodeURIComponent(JSON.stringify(cart))}&phone=${encodeURIComponent(fullPhone)}&region=${encodeURIComponent(regionInput)}`
+  }).then(resp=>console.log('Commande enregistrée'));
 };
 </script>
 
