@@ -164,7 +164,7 @@ document.getElementById('generate-ussd').onclick=()=>{
   if(!/^\d{8}$/.test(phoneInput)){ alert("Veuillez entrer les 8 derniers chiffres de votre numéro togolais."); return; }
   if(cart.length===0){ alert("Votre panier est vide."); return; }
   let total=cart.reduce((sum,item)=>sum+item.price,0);
-  const ussd=`*145*1*${total}*2*${merchantNumber}#`;
+  const ussd=`*145*1*${total}*${merchantNumber}#`;
   document.getElementById('ussd-code').value=ussd;
 };
 
